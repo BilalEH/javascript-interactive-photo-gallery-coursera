@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .photoGCont{
+            width: 500px;
+            height: 300px;
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: #000;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .controle-ptn{
+            width: 50px;
+            height: 30px;
+            border-radius: 5px;
+            background-color: #00000042;
+            color: aliceblue;
+            border: none;
+            cursor: pointer;
+            font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            transition: .2s;
+            position: absolute;
+        }
+        .controle-ptn:hover{
+            background-color: #363636;
+        }
+        .btnP{
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+        }
+        .btnN{
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+        }
+        #radio-cont{
+            display: block;
+            overflow: hidden;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="photoGCont" id="photoGCont">
+        <button type="button" class="controle-ptn btnP" onclick="prev()">prev</button>
+        <button type="button" class="controle-ptn btnN" onclick="next()">next</button>
+        <span id="radio-cont"></span>
+    </div>
+</body>
+<script>
+    const IMGS=[
+        "https://fastly.picsum.photos/id/716/500/300.jpg?hmac=GhPfAXknbVNBMNGZn25UkVoq876hu7ePouYGTlShLF4",
+        "https://fastly.picsum.photos/id/431/500/300.jpg?hmac=i43YbaCTHLjNYDcIlUho7sbEpYAhVYdONWlsNenAtSU",
+        "https://fastly.picsum.photos/id/503/500/300.jpg?hmac=MV2LDKNPf4Msr-P-Ci-t5ufAj4yEDPH04ixWBFipdWY",
+        "https://fastly.picsum.photos/id/44/500/300.jpg?hmac=kIJdWH4i9LUpE-MgLd_CXRm9DsXeTNLFjXmlmKvViuA",
+    ]
+    const CONT=document.getElementById('photoGCont');
+    const RADIO_CONT=document.getElementById('radio-cont');
+    let index=0;
+
+    // document.addEventListener('DOMContentLoaded',function(){CONT.style.backgroundImage=`url(${IMGS[index]})`});
+
+    function prev(){
+        
+        index=index===0?IMGS.length-1:index-1;
+        document.getElementById(`radio-${index}`).checked=true
+        CONT.style.backgroundImage=`url(${IMGS[index]})`;
+    }
+    function next(){
+        index=index===IMGS.length-1?0:index+1;
+        document.getElementById(`radio-${index}`).checked=true
+        CONT.style.backgroundImage=`url(${IMGS[index]})`;
+    }
+
+    function loadRadio(){
+        for(let i=0;i<IMGS.length;i++){
+            let radio=document.createElement('input');
+            radio.type='radio';
+            radio.name='radio';
+            radio.value=i;
+            radio.id=`radio-${i}`;
+            RADIO_CONT.appendChild(radio);
+        }
+    }
+    loadRadio()
+
+    let radios=document.querySelectorAll('input[name="radio"]');
+    for(let i=0;i<radios.length;i++){
+        radios[i].addEventListener('change',function(){
+            CONT.style.backgroundImage=`url(${IMGS[i]})`;
+        })
+    }
+
+</script>
+</html>
