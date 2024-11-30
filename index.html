@@ -15,6 +15,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
         }
         .photoGCont {
             width: 500px;
@@ -82,12 +83,7 @@
         <span id="radio-cont"></span>
     </div>
 
-    <div id="image-thumbnails" style="margin-top: 20px;">
-        <img src="https://fastly.picsum.photos/id/716/100/60.jpg?hmac=GhPfAXknbVNBMNGZn25UkVoq876hu7ePouYGTlShLF4" alt="Image 1" onmouseover="update(this)" onmouseout="reset()">
-        <img src="https://fastly.picsum.photos/id/431/100/60.jpg?hmac=i43YbaCTHLjNYDcIlUho7sbEpYAhVYdONWlsNenAtSU" alt="Image 2" onmouseover="update(this)" onmouseout="reset()">
-        <img src="https://fastly.picsum.photos/id/503/100/60.jpg?hmac=MV2LDKNPf4Msr-P-Ci-t5ufAj4yEDPH04ixWBFipdWY" alt="Image 3" onmouseover="update(this)" onmouseout="reset()">
-        <img src="https://fastly.picsum.photos/id/44/100/60.jpg?hmac=kIJdWH4i9LUpE-MgLd_CXRm9DsXeTNLFjXmlmKvViuA" alt="Image 4" onmouseover="update(this)" onmouseout="reset()">
-    </div>
+    <div id="image-thumbnails" style="margin-top: 20px;"></div>
 
     <script>
         const IMGS = [
@@ -147,6 +143,22 @@
                 CONT.style.backgroundImage = `url(${IMGS[i]})`;
             });
         }
+
+        function fetchImages() {
+            let imageContainer = document.getElementById('image-thumbnails');
+            imageContainer.innerHTML = "";
+            for (let i = 0; i < IMGS.length; i++) {
+                let img = document.createElement('img');
+                img.src = IMGS[i];
+                img.width = 100;
+                img.alt = "Image " + (i + 1);
+                img.addEventListener('mouseover', function () {
+                    update(this);
+                });
+                imageContainer.appendChild(img);
+            }
+        }
+        fetchImages()
     </script>
 </body>
 </html>
