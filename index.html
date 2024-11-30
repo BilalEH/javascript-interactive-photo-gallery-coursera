@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        body{
+        body {
             margin: 0;
             padding: 0;
             height: 100vh;
@@ -16,7 +16,7 @@
             justify-content: center;
             align-items: center;
         }
-        .photoGCont{
+        .photoGCont {
             width: 500px;
             height: 300px;
             border-radius: 20px;
@@ -27,7 +27,7 @@
             background-position: center;
             position: relative;
         }
-        .controle-ptn{
+        .controle-ptn {
             width: 50px;
             height: 30px;
             border-radius: 5px;
@@ -35,24 +35,24 @@
             color: aliceblue;
             border: none;
             cursor: pointer;
-            font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             transition: .2s;
             position: absolute;
         }
-        .controle-ptn:hover{
+        .controle-ptn:hover {
             background-color: #363636;
         }
-        .btnP{
+        .btnP {
             top: 50%;
             left: 10px;
             transform: translateY(-50%);
         }
-        .btnN{
+        .btnN {
             top: 50%;
             right: 10px;
             transform: translateY(-50%);
         }
-        #radio-cont{
+        #radio-cont {
             display: block;
             overflow: hidden;
             position: absolute;
@@ -60,58 +60,93 @@
             left: 50%;
             transform: translateX(-50%);
         }
+        #info-text {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="photoGCont" id="photoGCont">
+        <span id="info-text">Hover over an image below to display here</span>
         <button type="button" class="controle-ptn btnP" onclick="prev()">prev</button>
         <button type="button" class="controle-ptn btnN" onclick="next()">next</button>
         <span id="radio-cont"></span>
     </div>
-</body>
-<script>
-    const IMGS=[
-        "https://fastly.picsum.photos/id/716/500/300.jpg?hmac=GhPfAXknbVNBMNGZn25UkVoq876hu7ePouYGTlShLF4",
-        "https://fastly.picsum.photos/id/431/500/300.jpg?hmac=i43YbaCTHLjNYDcIlUho7sbEpYAhVYdONWlsNenAtSU",
-        "https://fastly.picsum.photos/id/503/500/300.jpg?hmac=MV2LDKNPf4Msr-P-Ci-t5ufAj4yEDPH04ixWBFipdWY",
-        "https://fastly.picsum.photos/id/44/500/300.jpg?hmac=kIJdWH4i9LUpE-MgLd_CXRm9DsXeTNLFjXmlmKvViuA",
-    ]
-    const CONT=document.getElementById('photoGCont');
-    const RADIO_CONT=document.getElementById('radio-cont');
-    let index=0;
 
-    CONT.style.backgroundImage=`url(${IMGS[index]})`;
+    <div id="image-thumbnails" style="margin-top: 20px;">
+        <img src="https://fastly.picsum.photos/id/716/100/60.jpg?hmac=GhPfAXknbVNBMNGZn25UkVoq876hu7ePouYGTlShLF4" alt="Image 1" onmouseover="update(this)" onmouseout="reset()">
+        <img src="https://fastly.picsum.photos/id/431/100/60.jpg?hmac=i43YbaCTHLjNYDcIlUho7sbEpYAhVYdONWlsNenAtSU" alt="Image 2" onmouseover="update(this)" onmouseout="reset()">
+        <img src="https://fastly.picsum.photos/id/503/100/60.jpg?hmac=MV2LDKNPf4Msr-P-Ci-t5ufAj4yEDPH04ixWBFipdWY" alt="Image 3" onmouseover="update(this)" onmouseout="reset()">
+        <img src="https://fastly.picsum.photos/id/44/100/60.jpg?hmac=kIJdWH4i9LUpE-MgLd_CXRm9DsXeTNLFjXmlmKvViuA" alt="Image 4" onmouseover="update(this)" onmouseout="reset()">
+    </div>
 
-    function prev(){
-        
-        index=index===0?IMGS.length-1:index-1;
-        document.getElementById(`radio-${index}`).checked=true
-        CONT.style.backgroundImage=`url(${IMGS[index]})`;
-    }
-    function next(){
-        index=index===IMGS.length-1?0:index+1;
-        document.getElementById(`radio-${index}`).checked=true
-        CONT.style.backgroundImage=`url(${IMGS[index]})`;
-    }
+    <script>
+        const IMGS = [
+            "https://fastly.picsum.photos/id/716/500/300.jpg?hmac=GhPfAXknbVNBMNGZn25UkVoq876hu7ePouYGTlShLF4",
+            "https://fastly.picsum.photos/id/431/500/300.jpg?hmac=i43YbaCTHLjNYDcIlUho7sbEpYAhVYdONWlsNenAtSU",
+            "https://fastly.picsum.photos/id/503/500/300.jpg?hmac=MV2LDKNPf4Msr-P-Ci-t5ufAj4yEDPH04ixWBFipdWY",
+            "https://fastly.picsum.photos/id/44/500/300.jpg?hmac=kIJdWH4i9LUpE-MgLd_CXRm9DsXeTNLFjXmlmKvViuA"
+        ];
+        const CONT = document.getElementById('photoGCont');
+        const RADIO_CONT = document.getElementById('radio-cont');
+        const INFO_TEXT = document.getElementById('info-text');
+        let index = 0;
 
-    function loadRadio(){
-        for(let i=0;i<IMGS.length;i++){
-            let radio=document.createElement('input');
-            radio.type='radio';
-            radio.name='radio';
-            radio.value=i;
-            radio.id=`radio-${i}`;
-            RADIO_CONT.appendChild(radio);
+        CONT.style.backgroundImage = `url(${IMGS[index]})`;
+
+        function prev() {
+            index = index === 0 ? IMGS.length - 1 : index - 1;
+            document.getElementById(`radio-${index}`).checked = true;
+            CONT.style.backgroundImage = `url(${IMGS[index]})`;
         }
-    }
-    loadRadio()
 
-    let radios=document.querySelectorAll('input[name="radio"]');
-    for(let i=0;i<radios.length;i++){
-        radios[i].addEventListener('change',function(){
-            CONT.style.backgroundImage=`url(${IMGS[i]})`;
-        })
-    }
+        function next() {
+            index = index === IMGS.length - 1 ? 0 : index + 1;
+            document.getElementById(`radio-${index}`).checked = true;
+            CONT.style.backgroundImage = `url(${IMGS[index]})`;
+        }
 
-</script>
+        function loadRadio() {
+            for (let i = 0; i < IMGS.length; i++) {
+                let radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'radio';
+                radio.value = i;
+                radio.id = `radio-${i}`;
+                RADIO_CONT.appendChild(radio);
+            }
+        }
+
+        function update(previewPic) {
+            console.log("Image Source:", previewPic.src);
+            console.log("Image Alt:", previewPic.alt);
+            INFO_TEXT.textContent = previewPic.alt;
+            CONT.style.backgroundImage = `url(${previewPic.src.replace('100/60', '500/300')})`;
+        }
+
+        function reset() {
+            console.log("Resetting to default state.");
+            INFO_TEXT.textContent = "Hover over an image below to display here";
+            CONT.style.backgroundImage = `url(${IMGS[index]})`;
+        }
+
+        loadRadio();
+
+        let radios = document.querySelectorAll('input[name="radio"]');
+        for (let i = 0; i < radios.length; i++) {
+            radios[i].addEventListener('change', function () {
+                CONT.style.backgroundImage = `url(${IMGS[i]})`;
+            });
+        }
+    </script>
+</body>
 </html>
